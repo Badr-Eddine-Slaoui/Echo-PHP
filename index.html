@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>brahim</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <section>
+        <h2>List of Users</h2>
+        <button id="loadBtn">Load Users</button>
+        <div id="usersList" class="box"></div>
+    </section>
+    <section>
+        <h2>Add New User</h2>
+        <form id="userForm">
+            <input type="text" name="name" placeholder="Name" required><br>
+            <input type="email" name="email" placeholder="Email" required><br>
+            <button type="submit">Add User</button>
+        </form>
+        <div id="result"></div>
+    </section>
+
+</div>
+
+<script>
+document.getElementById("loadBtn").onclick = function () {
+    fetch("api.php?action=read")
+        .then(res => res.text())
+        .then(data => {
+            document.getElementById("usersList").innerHTML = data;
+        });
+};
+
+document.getElementById("userForm").onsubmit = function (e) {
+    e.preventDefault();
+
+    let formData = new FormData(this);
+
+    fetch("api.php?action=add", {
+        method: "POST",
+        body: formData
+    })
+        .then(res => res.text())
+        .then(data => {
+            document.getElementById("result").innerHTML = data;
+        });
+};
+</script>
+
+</body>
+</html>
